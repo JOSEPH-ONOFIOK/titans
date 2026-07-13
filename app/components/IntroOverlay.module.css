@@ -1,0 +1,75 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  opacity: 1;
+  animation: overlayFade 500ms 950ms ease-out forwards;
+}
+
+.flash {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.9),
+    rgba(166, 255, 0, 0.4) 45%,
+    transparent 72%
+  );
+  opacity: 0;
+  animation: flashPulse 550ms 150ms ease-out forwards;
+}
+
+.logo {
+  position: relative;
+  width: clamp(56px, 9vw, 88px);
+  height: auto;
+  opacity: 0;
+  filter: drop-shadow(0 0 20px rgba(166, 255, 0, 0.6));
+  animation: logoReveal 350ms 280ms ease-out forwards;
+}
+
+@keyframes flashPulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  35% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.7);
+  }
+}
+
+@keyframes logoReveal {
+  from {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes overlayFade {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    animation: none;
+    display: none;
+  }
+}

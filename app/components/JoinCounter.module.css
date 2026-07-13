@@ -1,0 +1,95 @@
+.counter {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  width: 100%;
+  max-width: 620px;
+  padding: 14px 22px;
+  clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+  border: 1px solid rgba(166, 255, 0, 0.4);
+  background: rgba(166, 255, 0, 0.06);
+  box-shadow: 0 0 30px rgba(166, 255, 0, 0.1);
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--titans-green);
+  color: #04170a;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 13px;
+}
+
+.name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--titans-green);
+  box-shadow: 0 0 8px rgba(166, 255, 0, 0.8);
+  animation: dotPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.7);
+  }
+}
+
+.count {
+  font-family: var(--font-geist-mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: rgba(242, 255, 240, 0.75);
+}
+
+.followButton {
+  margin-left: auto;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  border: 1px solid rgba(166, 255, 0, 0.5);
+  color: var(--titans-green);
+  transition: background 0.15s, color 0.15s;
+}
+
+.followButton:hover {
+  background: var(--titans-green);
+  color: #04170a;
+}
+
+@media (max-width: 480px) {
+  .followButton {
+    margin-left: 0;
+  }
+}
