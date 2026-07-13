@@ -56,9 +56,9 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  if (!X_LINK_RE.test(quotePostLink)) {
+  if (quotePostLink && !X_LINK_RE.test(quotePostLink)) {
     return NextResponse.json(
-      { error: "Paste the link to your quote post on X." },
+      { error: "Paste a valid link to your quote post on X." },
       { status: 400 }
     );
   }

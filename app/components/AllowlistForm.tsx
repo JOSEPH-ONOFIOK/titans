@@ -277,14 +277,13 @@ export default function AllowlistForm() {
             </label>
 
             <label className={styles.label}>
-              Quote post link
+              Quote post link (optional for now)
               <input
                 className={styles.input}
                 type="text"
                 placeholder="https://x.com/yourhandle/status/..."
                 value={quotePostLink}
                 onChange={(e) => setQuotePostLink(e.target.value)}
-                required
               />
             </label>
 
