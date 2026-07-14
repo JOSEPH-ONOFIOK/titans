@@ -3,6 +3,7 @@ import styles from "./page.module.css";
 import AllowlistForm from "./components/AllowlistForm";
 import IntroOverlay from "./components/IntroOverlay";
 import JoinCounter from "./components/JoinCounter";
+import Reveal from "./components/Reveal";
 
 const GALLERY = [
   "/titans-nft-01.png",
@@ -63,45 +64,51 @@ export default function Home() {
       </section>
 
       <main className={styles.main}>
-        <section className={styles.gallery}>
-          <div className={styles.sectionHead}>
-            <span className={styles.sectionIndex}>01</span>
-            <h2 className={styles.sectionTitle}>THE PANTHEON</h2>
-          </div>
+        <section>
+          <Reveal className={styles.gallery}>
+            <div className={styles.sectionHead}>
+              <span className={styles.sectionIndex}>01</span>
+              <h2 className={styles.sectionTitle}>THE PANTHEON</h2>
+            </div>
 
-          <div className={styles.filmstrip}>
-            {GALLERY.map((src) => (
-              <div key={src} className={styles.filmstripItem}>
-                <Image
-                  src={src}
-                  alt="Titans god"
-                  width={949}
-                  height={949}
-                  className={styles.filmstripImage}
-                />
-              </div>
-            ))}
-          </div>
+            <div className={styles.filmstrip}>
+              {GALLERY.map((src) => (
+                <div key={src} className={styles.filmstripItem}>
+                  <Image
+                    src={src}
+                    alt="Titans god"
+                    width={949}
+                    height={949}
+                    className={styles.filmstripImage}
+                  />
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </section>
 
-        <section className={styles.joinBand}>
-          <JoinCounter />
+        <section>
+          <Reveal className={styles.joinBand}>
+            <JoinCounter />
+          </Reveal>
         </section>
 
-        <section id="allowlist" className={styles.allowlistSection}>
-          <div className={styles.sectionHead}>
-            <span className={styles.sectionIndex}>02</span>
-            <h2 className={styles.sectionTitle}>SECURE YOUR SEAT</h2>
-          </div>
+        <section id="allowlist">
+          <Reveal className={styles.allowlistSection}>
+            <div className={styles.sectionHead}>
+              <span className={styles.sectionIndex}>02</span>
+              <h2 className={styles.sectionTitle}>SECURE YOUR SEAT</h2>
+            </div>
 
-          <div className={styles.allowlistRow}>
-            <p className={styles.aboutText}>
-              Drop your wallet below to lock in for the WL phase. If your
-              community gets allocation, every submitted wallet gets added
-              to the whitelist for mint.
-            </p>
-            <AllowlistForm />
-          </div>
+            <div className={styles.allowlistRow}>
+              <p className={styles.aboutText}>
+                Drop your wallet below to lock in for the WL phase. If your
+                community gets allocation, every submitted wallet gets added
+                to the whitelist for mint.
+              </p>
+              <AllowlistForm />
+            </div>
+          </Reveal>
         </section>
       </main>
 

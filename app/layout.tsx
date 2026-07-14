@@ -18,10 +18,30 @@ const cinzel = Cinzel({
   subsets: ["latin"],
 });
 
+const TITLE = "TITANS — Gods of Robinhood";
+const DESCRIPTION =
+  "Gods of Robinhood. Secure your seat on the Titans allowlist.";
+
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
 export const metadata: Metadata = {
-  title: "TITANS — Gods of Robinhood",
-  description:
-    "Gods of Robinhood. Secure your seat on the Titans allowlist.",
+  metadataBase: new URL(SITE_URL),
+  title: TITLE,
+  description: DESCRIPTION,
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [{ url: "/titans-banner.png", width: 1500, height: 500 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/titans-banner.png"],
+  },
 };
 
 export default function RootLayout({

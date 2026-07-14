@@ -207,11 +207,15 @@
 }
 
 .main {
+  position: relative;
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 100px;
   padding: 100px 0 120px;
+  background:
+    radial-gradient(640px circle at 12% 0%, rgba(166, 255, 0, 0.06), transparent 60%),
+    radial-gradient(560px circle at 88% 55%, rgba(139, 92, 246, 0.06), transparent 60%);
 }
 
 .sectionHead {
@@ -350,6 +354,12 @@
   .sectionHead,
   .allowlistRow {
     padding: 0 20px;
+  }
+
+  .sectionHead {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
   }
 }
 

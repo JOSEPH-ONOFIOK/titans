@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   UserPlus,
   Heart,
@@ -57,11 +57,11 @@ const OBJECTIVES = [
 ] as const;
 
 const ASCENSION_LEVELS = [
-  "MORTAL",
-  "ACOLYTE",
-  "CHOSEN ONE",
-  "DEMIGOD",
-  "ASCENDED",
+  { label: "MORTAL", color: "rgba(242, 255, 240, 0.5)" },
+  { label: "ACOLYTE", color: "var(--titans-green)" },
+  { label: "CHOSEN ONE", color: "var(--titans-gold)" },
+  { label: "DEMIGOD", color: "var(--titans-violet)" },
+  { label: "ASCENDED", color: "var(--titans-white)" },
 ];
 
 export default function AllowlistForm() {
@@ -74,7 +74,48 @@ export default function AllowlistForm() {
   const [message, setMessage] = useState("");
   const [passData, setPassData] = useState<PassData | null>(null);
 
+  const modalRef = useRef<HTMLFormElement>(null);
+  const firstInputRef = useRef<HTMLInputElement>(null);
+  const continueButtonRef = useRef<HTMLButtonElement>(null);
+
   const allDone = done.size === OBJECTIVES.length;
+
+  useEffect(() => {
+    if (!modalOpen) return;
+
+    firstInputRef.current?.focus();
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setModalOpen(false);
+        return;
+      }
+
+      if (e.key !== "Tab" || !modalRef.current) return;
+
+      const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+        'input, button, [href], [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      continueButtonRef.current?.focus();
+    };
+  }, [modalOpen]);
 
   function runObjective(id: string, href: string) {
     window.open(href, "_blank", "noopener,noreferrer");
@@ -224,13 +265,23 @@ export default function AllowlistForm() {
             style={{ width: `${progress}%` }}
           />
         </div>
-        <span className={styles.progressLabel}>
-          {ASCENSION_LEVELS[done.size]}
+        <span
+          className={styles.progressLabel}
+          style={{
+            color: ASCENSION_LEVELS[done.size].color,
+            textShadow:
+              done.size >= 2
+                ? `0 0 12px ${ASCENSION_LEVELS[done.size].color}`
+                : "none",
+          }}
+        >
+          {ASCENSION_LEVELS[done.size].label}
         </span>
 
         {allDone && (
           <button
             type="button"
+            ref={continueButtonRef}
             className={styles.continueButton}
             onClick={() => setModalOpen(true)}
           >
@@ -245,9 +296,13 @@ export default function AllowlistForm() {
           onClick={() => setModalOpen(false)}
         >
           <form
+            ref={modalRef}
             className={styles.modalCard}
             onSubmit={handleSubmit}
             onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="allowlist-modal-heading"
           >
             <button
               type="button"
@@ -262,11 +317,14 @@ export default function AllowlistForm() {
               <CheckCircle2 className={styles.clearedIcon} strokeWidth={1.75} />
               All 4 trials cleared
             </p>
-            <p className={styles.cardHeading}>Inscribe your name</p>
+            <p id="allowlist-modal-heading" className={styles.cardHeading}>
+              Inscribe your name
+            </p>
 
             <label className={styles.label}>
               X username
               <input
+                ref={firstInputRef}
                 className={styles.input}
                 type="text"
                 placeholder="@yourhandle"

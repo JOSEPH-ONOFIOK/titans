@@ -40,6 +40,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# twitter scraper Chrome profile (contains live login session)
+scripts/twitter-scraper/chrome-profile/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
