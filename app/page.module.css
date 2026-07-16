@@ -338,8 +338,13 @@
 
 @media (max-width: 640px) {
   .hero {
-    height: 64vh;
-    min-height: 420px;
+    height: 46vh;
+    min-height: 340px;
+  }
+
+  .heroImage {
+    animation: none;
+    object-position: center 35%;
   }
 
   .heroContent {

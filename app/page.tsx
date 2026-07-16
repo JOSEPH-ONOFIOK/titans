@@ -44,6 +44,7 @@ export default function Home() {
           alt="Titans — Gods of Robinhood"
           fill
           sizes="100vw"
+          quality={100}
           priority
           className={styles.heroImage}
         />
