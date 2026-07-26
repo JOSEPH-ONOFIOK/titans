@@ -1,8 +1,11 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import AllowlistForm from "./components/AllowlistForm";
+import GalleryMarquee from "./components/GalleryMarquee";
 import IntroOverlay from "./components/IntroOverlay";
 import JoinCounter from "./components/JoinCounter";
+import LightningVeins from "./components/LightningVeins";
+import ParallaxHero from "./components/ParallaxHero";
 import Reveal from "./components/Reveal";
 
 const GALLERY = [
@@ -20,6 +23,7 @@ const GALLERY = [
 export default function Home() {
   return (
     <div className={styles.page}>
+      <LightningVeins />
       <IntroOverlay />
 
       <header className={styles.nav}>
@@ -39,15 +43,24 @@ export default function Home() {
       </header>
 
       <section className={styles.hero}>
-        <Image
-          src="/titans-banner.png"
-          alt="Titans — Gods of Robinhood"
-          fill
-          sizes="100vw"
-          quality={100}
-          priority
-          className={styles.heroImage}
-        />
+        <ParallaxHero />
+        <div className={styles.heroLightning} aria-hidden="true" />
+        <svg
+          className={`${styles.heroBolt} ${styles.heroBoltLeft}`}
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path d="M13 2 3 14h7l-1 8 11-14h-7l1-6z" />
+        </svg>
+        <svg
+          className={`${styles.heroBolt} ${styles.heroBoltRight}`}
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path d="M13 2 3 14h7l-1 8 11-14h-7l1-6z" />
+        </svg>
         <div className={styles.heroScrim} />
 
         <div className={styles.heroContent}>
@@ -72,19 +85,7 @@ export default function Home() {
               <h2 className={styles.sectionTitle}>THE PANTHEON</h2>
             </div>
 
-            <div className={styles.filmstrip}>
-              {GALLERY.map((src) => (
-                <div key={src} className={styles.filmstripItem}>
-                  <Image
-                    src={src}
-                    alt="Titans god"
-                    width={949}
-                    height={949}
-                    className={styles.filmstripImage}
-                  />
-                </div>
-              ))}
-            </div>
+            <GalleryMarquee images={GALLERY} />
           </Reveal>
         </section>
 

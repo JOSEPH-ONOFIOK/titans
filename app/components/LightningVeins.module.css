@@ -1,0 +1,40 @@
+.field {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.vein {
+  position: absolute;
+  opacity: 0;
+  filter: drop-shadow(0 0 6px currentColor);
+  animation-name: veinFlicker;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes veinFlicker {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  2% {
+    opacity: 0.5;
+  }
+  4% {
+    opacity: 0.1;
+  }
+  7% {
+    opacity: 0.4;
+  }
+  12% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .field {
+    display: none;
+  }
+}
