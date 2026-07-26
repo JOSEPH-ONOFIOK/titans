@@ -14,7 +14,7 @@ export default function IntroOverlay() {
 
     const timeout = setTimeout(
       () => setMounted(false),
-      prefersReducedMotion ? 0 : 1500
+      prefersReducedMotion ? 0 : 2650
     );
 
     return () => clearTimeout(timeout);
@@ -24,6 +24,15 @@ export default function IntroOverlay() {
 
   return (
     <div className={styles.overlay}>
+      <span className={styles.screenFlash} aria-hidden="true" />
+      <svg
+        className={styles.bolt}
+        viewBox="0 0 100 400"
+        fill="white"
+        aria-hidden="true"
+      >
+        <path d="M60 0 L25 190 L50 190 L20 400 L90 160 L55 160 L80 0 Z" />
+      </svg>
       <span className={styles.flash} aria-hidden="true" />
       <Image
         src="/titans-logo.png"

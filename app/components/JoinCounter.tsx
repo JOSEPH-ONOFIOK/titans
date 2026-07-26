@@ -77,7 +77,7 @@ export default function JoinCounter() {
       <div className={styles.stat}>
         <span className={styles.dot} />
         <span className={styles.count}>
-          {displayCount === null ? "—" : displayCount.toLocaleString()} joined
+          {displayCount === null ? "—" : displayCount.toLocaleString()} ascended
         </span>
       </div>
 

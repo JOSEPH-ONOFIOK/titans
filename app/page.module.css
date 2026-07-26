@@ -87,6 +87,7 @@
   min-height: 480px;
   max-height: 720px;
   overflow: hidden;
+  background: var(--background);
 }
 
 .heroParallax {
@@ -96,8 +97,8 @@
 }
 
 .heroImage {
-  object-fit: cover;
-  object-position: center 30%;
+  object-fit: contain;
+  object-position: center;
 }
 
 .heroLightning {
@@ -451,16 +452,35 @@
 
 @media (max-width: 640px) {
   .hero {
-    height: 46vh;
-    min-height: 340px;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    display: flex;
+    flex-direction: column;
   }
 
-  .heroImage {
-    object-position: center 35%;
+  .heroParallax {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    aspect-ratio: 3 / 1;
+  }
+
+  .heroScrim {
+    display: none;
   }
 
   .heroContent {
-    padding: 0 20px 40px;
+    position: relative;
+    padding: 24px 20px 40px;
+  }
+
+  .scrollCue {
+    display: none;
+  }
+
+  .heroBolt {
+    display: none;
   }
 
   .main {

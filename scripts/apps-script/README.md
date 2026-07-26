@@ -14,11 +14,13 @@ header row automatically the first time it runs.
 1. In the Sheet, go to **Extensions → Apps Script**.
 2. Delete the placeholder `Code.gs` contents and paste in
    [`allowlist.gs`](./allowlist.gs) from this folder.
-3. Replace `REPLACE_WITH_A_LONG_RANDOM_SECRET` at the top with a long
-   random string (e.g. generate one with `openssl rand -hex 24`). This
-   secret stops randoms from writing to your sheet directly — anyone who
-   has the deployed URL but not the secret gets rejected.
-4. Save the project (name it whatever you like, e.g. "Titans Allowlist").
+3. Replace `REPLACE_WITH_YOUR_SHEET_ID` with the Sheet's ID (the long
+   string in its URL between `/d/` and `/edit`).
+4. Replace `REPLACE_WITH_A_LONG_RANDOM_SECRET` with a long random string
+   (e.g. generate one with `openssl rand -hex 24`). This secret stops
+   randoms from writing to your sheet directly — anyone who has the
+   deployed URL but not the secret gets rejected.
+5. Save the project (name it whatever you like, e.g. "Titans Allowlist").
 
 ## 3. Deploy as a Web App
 

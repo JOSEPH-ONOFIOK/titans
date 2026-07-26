@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 const ETH_ADDRESS_RE = /^0x[a-fA-F0-9]{40}$/;
 const HANDLE_RE = /^@?[A-Za-z0-9_]{1,15}$/;
-const X_LINK_RE = /^https?:\/\/(www\.)?(x|twitter)\.com\/\S+\/status\/\d+/i;
 
 const SHEETS_WEBHOOK_URL = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
 const SHEETS_WEBHOOK_SECRET = process.env.GOOGLE_SHEETS_WEBHOOK_SECRET;
@@ -33,7 +32,9 @@ export async function POST(req: NextRequest) {
 
   const wallet = String(body.wallet ?? "").trim();
   const twitter = String(body.twitter ?? "").trim();
-  const quotePostLink = String(body.quotePostLink ?? "").trim();
+  const follow = Boolean(body.follow);
+  const quote = Boolean(body.quote);
+  const tag = Boolean(body.tag);
 
   if (!ETH_ADDRESS_RE.test(wallet)) {
     return NextResponse.json(
@@ -49,13 +50,6 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  if (quotePostLink && !X_LINK_RE.test(quotePostLink)) {
-    return NextResponse.json(
-      { error: "Paste a valid link to your quote post on X." },
-      { status: 400 }
-    );
-  }
-
   if (!SHEETS_WEBHOOK_URL || !SHEETS_WEBHOOK_SECRET) {
     const inviteCode = `TTN-${crypto.randomUUID().split("-")[0].toUpperCase().slice(0, 6)}`;
     return NextResponse.json({ ok: true, position: 1, inviteCode });
@@ -67,9 +61,13 @@ export async function POST(req: NextRequest) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         secret: SHEETS_WEBHOOK_SECRET,
+        timestamp: new Date().toISOString(),
+        username: twitter.startsWith("@") ? twitter : `@${twitter}`,
         wallet,
-        twitter: twitter.startsWith("@") ? twitter : `@${twitter}`,
-        quotePostLink,
+        follow: follow ? "yes" : "no",
+        quote: quote ? "yes" : "no",
+        tag: tag ? "yes" : "no",
+        refBy: "",
       }),
     });
 

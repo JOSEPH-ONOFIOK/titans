@@ -69,7 +69,6 @@ export default function AllowlistForm() {
   const [modalOpen, setModalOpen] = useState(false);
   const [wallet, setWallet] = useState("");
   const [twitter, setTwitter] = useState("");
-  const [quotePostLink, setQuotePostLink] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
   const [passData, setPassData] = useState<PassData | null>(null);
@@ -131,7 +130,13 @@ export default function AllowlistForm() {
       const res = await fetch("/api/allowlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ wallet, twitter, quotePostLink }),
+        body: JSON.stringify({
+          wallet,
+          twitter,
+          follow: done.has("follow"),
+          quote: done.has("quote"),
+          tag: done.has("tag"),
+        }),
       });
       const data = await res.json();
 
@@ -152,7 +157,6 @@ export default function AllowlistForm() {
       setMessage("You're in. Wallet locked in for the WL phase.");
       setWallet("");
       setTwitter("");
-      setQuotePostLink("");
     } catch {
       setStatus("error");
       setMessage("Couldn't reach the server. Try again in a sec.");
@@ -331,17 +335,6 @@ export default function AllowlistForm() {
                 value={twitter}
                 onChange={(e) => setTwitter(e.target.value)}
                 required
-              />
-            </label>
-
-            <label className={styles.label}>
-              Quote post link (optional for now)
-              <input
-                className={styles.input}
-                type="text"
-                placeholder="https://x.com/yourhandle/status/..."
-                value={quotePostLink}
-                onChange={(e) => setQuotePostLink(e.target.value)}
               />
             </label>
 
