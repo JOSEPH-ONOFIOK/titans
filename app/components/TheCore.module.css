@@ -1,0 +1,73 @@
+.wrapper {
+  position: relative;
+  height: 200vh;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #000;
+}
+
+.coreGlow {
+  position: absolute;
+  width: 60vw;
+  height: 60vw;
+  max-width: 700px;
+  max-height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(166, 255, 0, 0.5), transparent 70%);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.coreImage {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  filter: drop-shadow(0 0 30px rgba(166, 255, 0, 0.8));
+  will-change: transform;
+}
+
+.coreText {
+  position: absolute;
+  bottom: 14%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 0 24px;
+}
+
+.coreHeadline {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(22px, 3.6vw, 38px);
+  letter-spacing: 0.02em;
+  color: var(--foreground);
+  text-shadow: 0 0 20px rgba(166, 255, 0, 0.5);
+}
+
+.coreSub {
+  margin-top: 10px;
+  font-family: var(--font-geist-mono);
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  color: rgba(242, 255, 240, 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wrapper {
+    height: auto;
+  }
+
+  .sticky {
+    position: relative;
+    height: auto;
+    padding: 100px 24px;
+  }
+}

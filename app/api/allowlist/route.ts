@@ -6,6 +6,30 @@ const HANDLE_RE = /^@?[A-Za-z0-9_]{1,15}$/;
 const SHEETS_WEBHOOK_URL = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
 const SHEETS_WEBHOOK_SECRET = process.env.GOOGLE_SHEETS_WEBHOOK_SECRET;
 
+// Basic per-instance rate limit: keeps a single client from hammering the
+// endpoint. It's in-memory (resets on cold start, not shared across
+// serverless instances) — good enough to blunt casual abuse, not a
+// substitute for a real distributed limiter (e.g. Upstash) at scale.
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const RATE_LIMIT_MAX = 5;
+const requestLog = new Map<string, number[]>();
+
+function isRateLimited(key: string): boolean {
+  const now = Date.now();
+  const recent = (requestLog.get(key) ?? []).filter(
+    (t) => now - t < RATE_LIMIT_WINDOW_MS
+  );
+  recent.push(now);
+  requestLog.set(key, recent);
+  return recent.length > RATE_LIMIT_MAX;
+}
+
+function getClientIp(req: NextRequest): string {
+  const forwarded = req.headers.get("x-forwarded-for");
+  if (forwarded) return forwarded.split(",")[0].trim();
+  return req.headers.get("x-real-ip") ?? "unknown";
+}
+
 export async function GET() {
   if (!SHEETS_WEBHOOK_URL) {
     return NextResponse.json({ count: 0 });
@@ -24,6 +48,13 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  if (isRateLimited(getClientIp(req))) {
+    return NextResponse.json(
+      { error: "Too many attempts. Try again in a few minutes." },
+      { status: 429 }
+    );
+  }
+
   const body = await req.json().catch(() => null);
 
   if (!body || typeof body !== "object") {

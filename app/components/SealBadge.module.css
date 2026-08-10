@@ -1,0 +1,47 @@
+.seal {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
+}
+
+.ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: sealSpin 22s linear infinite;
+}
+
+.ringText {
+  font-family: var(--font-geist-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.05em;
+  fill: var(--titans-green);
+}
+
+.core {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--titans-green);
+  box-shadow: 0 0 12px rgba(166, 255, 0, 0.9);
+}
+
+@keyframes sealSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ring {
+    animation: none;
+  }
+}

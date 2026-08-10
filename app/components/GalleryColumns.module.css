@@ -1,0 +1,120 @@
+.grid {
+  display: flex;
+  gap: 16px;
+  height: 560px;
+  padding: 0 32px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 12%,
+    black 88%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 12%,
+    black 88%,
+    transparent
+  );
+}
+
+.columnTrack {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.up {
+  animation: scrollUp 34s linear infinite;
+}
+
+.down {
+  animation: scrollDown 34s linear infinite;
+}
+
+.grid:hover .up,
+.grid:hover .down {
+  animation-play-state: paused;
+}
+
+@keyframes scrollUp {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes scrollDown {
+  from {
+    transform: translateY(-50%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 3px;
+  border: 1px solid var(--titans-border);
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.item:hover {
+  transform: scale(1.05);
+  border-color: var(--titans-green);
+  box-shadow: 0 0 24px rgba(166, 255, 0, 0.35);
+  z-index: 1;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.caption {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  background: linear-gradient(180deg, transparent, rgba(3, 4, 2, 0.92) 60%);
+  font-family: var(--font-geist-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--titans-green);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.caption span:last-child {
+  color: rgba(242, 255, 240, 0.6);
+}
+
+.item:hover .caption {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 640px) {
+  .grid {
+    height: 420px;
+    padding: 0 20px;
+    gap: 10px;
+  }
+}

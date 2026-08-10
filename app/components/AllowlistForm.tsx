@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useMagnetic } from "../hooks/useMagnetic";
 import {
   UserPlus,
   Heart,
@@ -56,14 +57,6 @@ const OBJECTIVES = [
   },
 ] as const;
 
-const ASCENSION_LEVELS = [
-  { label: "MORTAL", color: "rgba(242, 255, 240, 0.5)" },
-  { label: "ACOLYTE", color: "var(--titans-green)" },
-  { label: "CHOSEN ONE", color: "var(--titans-gold)" },
-  { label: "DEMIGOD", color: "var(--titans-violet)" },
-  { label: "ASCENDED", color: "var(--titans-white)" },
-];
-
 export default function AllowlistForm() {
   const [done, setDone] = useState<Set<string>>(new Set());
   const [modalOpen, setModalOpen] = useState(false);
@@ -75,7 +68,8 @@ export default function AllowlistForm() {
 
   const modalRef = useRef<HTMLFormElement>(null);
   const firstInputRef = useRef<HTMLInputElement>(null);
-  const continueButtonRef = useRef<HTMLButtonElement>(null);
+  const continueButtonRef = useMagnetic<HTMLButtonElement>(0.3);
+  const submitButtonRef = useMagnetic<HTMLButtonElement>(0.2);
 
   const allDone = done.size === OBJECTIVES.length;
 
@@ -169,7 +163,7 @@ export default function AllowlistForm() {
     const rows = [
       { label: "User", value: passData.twitter },
       { label: "Wallet", value: truncateWallet(passData.wallet) },
-      { label: "Status", value: "BOUND" },
+      { label: "Status", value: "CHOSEN" },
       { label: "Sigil", value: passData.inviteCode },
     ];
 
@@ -269,17 +263,8 @@ export default function AllowlistForm() {
             style={{ width: `${progress}%` }}
           />
         </div>
-        <span
-          className={styles.progressLabel}
-          style={{
-            color: ASCENSION_LEVELS[done.size].color,
-            textShadow:
-              done.size >= 2
-                ? `0 0 12px ${ASCENSION_LEVELS[done.size].color}`
-                : "none",
-          }}
-        >
-          {ASCENSION_LEVELS[done.size].label}
+        <span className={styles.progressLabel}>
+          STATUS // <span className={styles.progressLabelState}>MORTAL</span>
         </span>
 
         {allDone && (
@@ -355,6 +340,7 @@ export default function AllowlistForm() {
             )}
 
             <button
+              ref={submitButtonRef}
               className={styles.submitButton}
               type="submit"
               disabled={status === "submitting"}

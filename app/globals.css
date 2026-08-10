@@ -26,6 +26,8 @@ body {
 
 html {
   color-scheme: dark;
+  scrollbar-width: thin;
+  scrollbar-color: var(--titans-green-deep) var(--background);
 }
 
 * {
@@ -39,6 +41,31 @@ a {
   text-decoration: none;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--titans-green-deep);
+  border-radius: 6px;
+  border: 2px solid var(--background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--titans-green);
+}
+
+:focus-visible {
+  outline: 2px solid var(--titans-green);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
 [data-reveal="hidden"] {
   opacity: 0;
   transform: translateY(28px);
@@ -47,6 +74,30 @@ a {
 [data-reveal="visible"] {
   opacity: 1;
   transform: translateY(0);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.revealScale[data-reveal="hidden"] {
+  opacity: 0;
+  transform: scale(0.92);
+  filter: blur(6px);
+}
+
+.revealScale[data-reveal="visible"] {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+  transition: opacity 0.9s ease-out, transform 0.9s ease-out, filter 0.9s ease-out;
+}
+
+.revealSlide[data-reveal="hidden"] {
+  opacity: 0;
+  transform: translateX(-48px);
+}
+
+.revealSlide[data-reveal="visible"] {
+  opacity: 1;
+  transform: translateX(0);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 

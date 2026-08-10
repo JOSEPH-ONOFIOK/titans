@@ -1,0 +1,47 @@
+.track {
+  overflow: hidden;
+  padding: 14px 0;
+  border-top: 1px solid var(--titans-border);
+  border-bottom: 1px solid var(--titans-border);
+}
+
+.strip {
+  display: flex;
+  width: max-content;
+  animation: tickerScroll 26s linear infinite;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  font-family: var(--font-geist-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--titans-green);
+  text-shadow: 0 0 8px rgba(166, 255, 0, 0.4);
+  padding: 0 20px;
+  white-space: nowrap;
+}
+
+.dot {
+  margin-left: 20px;
+  color: rgba(242, 255, 240, 0.3);
+  text-shadow: none;
+}
+
+@keyframes tickerScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .strip {
+    animation: none;
+  }
+}

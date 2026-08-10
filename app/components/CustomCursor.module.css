@@ -1,0 +1,50 @@
+.dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: var(--titans-green);
+  box-shadow: 0 0 8px rgba(166, 255, 0, 0.9);
+  pointer-events: none;
+  z-index: 300;
+  will-change: transform;
+}
+
+.ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  margin: -16px 0 0 -16px;
+  border-radius: 50%;
+  border: 1px solid rgba(166, 255, 0, 0.5);
+  pointer-events: none;
+  z-index: 300;
+  transition: width 0.2s ease-out, height 0.2s ease-out, margin 0.2s ease-out,
+    border-color 0.2s, background 0.2s;
+  will-change: transform;
+}
+
+.ringHover {
+  width: 54px;
+  height: 54px;
+  margin: -27px 0 0 -27px;
+  border-color: var(--titans-green);
+  background: rgba(166, 255, 0, 0.08);
+}
+
+.cursorActive,
+.cursorActive * {
+  cursor: none !important;
+}
+
+@media (max-width: 640px), (pointer: coarse) {
+  .dot,
+  .ring {
+    display: none;
+  }
+}

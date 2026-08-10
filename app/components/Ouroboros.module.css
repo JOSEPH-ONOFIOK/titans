@@ -1,0 +1,88 @@
+.wrap {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.track {
+  stroke: var(--titans-border);
+}
+
+.body {
+  stroke: var(--titans-green);
+  filter: drop-shadow(0 0 4px rgba(166, 255, 0, 0.7));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .body {
+    transition: stroke-dashoffset 0.1s linear, stroke 0.3s ease-out;
+  }
+}
+
+.head {
+  fill: var(--titans-green);
+  stroke: var(--background);
+  stroke-width: 0.4;
+  filter: drop-shadow(0 0 4px rgba(166, 255, 0, 0.9));
+}
+
+.brow {
+  stroke: var(--background);
+  stroke-width: 0.4;
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+
+.jaw {
+  stroke: var(--background);
+  stroke-width: 0.35;
+  stroke-linecap: round;
+  opacity: 0.6;
+}
+
+.fang {
+  fill: var(--titans-panel);
+  opacity: 0.85;
+}
+
+.eye {
+  fill: var(--background);
+}
+
+.tail {
+  fill: var(--titans-green-deep);
+  opacity: 0.7;
+}
+
+.complete .body {
+  stroke: var(--titans-gold);
+}
+
+.complete .head {
+  fill: var(--titans-gold);
+  filter: drop-shadow(0 0 6px rgba(255, 209, 102, 0.9));
+  animation: ouroborosPulse 1s ease-in-out infinite;
+}
+
+@keyframes ouroborosPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+}
+
+@media (max-width: 640px) {
+  .wrap {
+    bottom: 16px;
+    right: 16px;
+    transform: scale(0.75);
+  }
+}
