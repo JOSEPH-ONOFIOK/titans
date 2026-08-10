@@ -6,10 +6,10 @@ import { useMagnetic } from "../hooks/useMagnetic";
 import styles from "./Nav.module.css";
 
 const LINKS = [
-  { label: "Pantheon", href: "#pantheon" },
-  { label: "Lore", href: "#lore" },
-  { label: "The Core", href: "#core" },
-  { label: "Vision", href: "#vision" },
+  { label: "Pantheon", href: "/#pantheon" },
+  { label: "Lore", href: "/#lore" },
+  { label: "The Core", href: "/#core" },
+  { label: "Vision", href: "/#vision" },
 ];
 
 export default function Nav() {
@@ -46,19 +46,20 @@ export default function Nav() {
   return (
     <header className={`${styles.nav} ${scrolled ? styles.navScrolled : ""}`}>
       <div className={styles.navRow}>
-        <div className={styles.navBrand}>
+        <a href="/" className={styles.navBrand}>
           <Image
             src="/titans-logo.png"
             alt=""
             width={26}
             height={26}
+            priority
             className={styles.navMark}
           />
           <span className={styles.navLogo}>TITANS</span>
-        </div>
+        </a>
 
         <div className={styles.navActions}>
-          <a ref={ctaRef} className={styles.navCta} href="#allowlist">
+          <a ref={ctaRef} className={styles.navCta} href="/enter">
             Enter Pantheon
           </a>
           <button

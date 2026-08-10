@@ -70,3 +70,10 @@
     animation: none;
   }
 }
+
+@media (max-width: 640px) {
+  .wrapper {
+    padding: 80px 20px;
+    gap: 20px;
+  }
+}

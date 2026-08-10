@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import styles from "./LightningVeins.module.css";
 
 const VEIN_PATHS = [
@@ -26,7 +26,17 @@ function seededVeins() {
 }
 
 export default function LightningVeins() {
-  const veins = useMemo(seededVeins, []);
+  // Random per-render values would mismatch between server and client
+  // render passes, so only generate them after mount (client-only).
+  const [veins, setVeins] = useState<ReturnType<typeof seededVeins> | null>(
+    null
+  );
+
+  useEffect(() => {
+    setVeins(seededVeins());
+  }, []);
+
+  if (!veins) return null;
 
   return (
     <div className={styles.field} aria-hidden="true">

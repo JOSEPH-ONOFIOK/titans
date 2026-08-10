@@ -66,9 +66,15 @@ function pointAt(points: PathPoint[], totalLength: number, progress: number) {
 
 export default function Ouroboros() {
   const [progress, setProgress] = useState(0);
+  // The serpent geometry involves floating-point trig that can differ by a
+  // trailing digit between server and client engines, and scroll progress
+  // is meaningless before mount anyway, so skip SSR for this entirely.
+  const [mounted, setMounted] = useState(false);
   const serpent = useMemo(buildSerpentPath, []);
 
   useEffect(() => {
+    setMounted(true);
+
     let scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
     let ticking = false;
 
@@ -99,6 +105,8 @@ export default function Ouroboros() {
       window.removeEventListener("resize", onResize);
     };
   }, []);
+
+  if (!mounted) return null;
 
   const { points, totalLength, d } = serpent;
   const offset = totalLength * (1 - progress);

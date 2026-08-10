@@ -30,9 +30,7 @@
 .hero {
   position: relative;
   width: 100%;
-  height: 78vh;
-  min-height: 480px;
-  max-height: 720px;
+  height: 100svh;
   overflow: hidden;
   background: var(--background);
 }
@@ -179,10 +177,21 @@
   }
 }
 
+.heroTitle {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(64px, 12vw, 160px);
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  color: var(--foreground);
+  text-shadow: 0 0 40px rgba(166, 255, 0, 0.4);
+}
+
 .heroLine {
   font-size: clamp(17px, 2.2vw, 21px);
   line-height: 1.5;
   color: rgba(242, 255, 240, 0.9);
+  max-width: 560px;
 }
 
 .heroCta {
@@ -226,7 +235,7 @@
   animation: cueFade 2.2s ease-in-out infinite;
 }
 
-.heroSector {
+.heroBuiltOn {
   position: absolute;
   bottom: 30px;
   left: 32px;
@@ -470,21 +479,6 @@
   width: 100%;
 }
 
-.footer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: space-between;
-  padding: 24px 32px;
-  font-size: 13px;
-  color: rgba(242, 255, 240, 0.5);
-  border-top: 1px solid var(--titans-border);
-}
-
-.footer a:hover {
-  color: var(--titans-green);
-}
-
 @media (max-width: 640px) {
   .hero {
     height: auto;
@@ -518,7 +512,7 @@
     display: none;
   }
 
-  .heroSector,
+  .heroBuiltOn,
   .heroSeal {
     display: none;
   }
@@ -529,7 +523,11 @@
   }
 
   .sectionHead,
-  .allowlistRow {
+  .allowlistRow,
+  .chronicle,
+  .gallerySub,
+  .joinBand,
+  .firstThousand {
     padding: 0 20px;
   }
 

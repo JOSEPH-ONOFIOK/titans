@@ -1,9 +1,16 @@
 .list {
   display: flex;
   flex-direction: column;
+  padding: 0 32px;
   max-width: 720px;
   margin: 0 auto;
   width: 100%;
+}
+
+@media (max-width: 640px) {
+  .list {
+    padding: 0 20px;
+  }
 }
 
 .item {

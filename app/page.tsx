@@ -1,17 +1,11 @@
 import styles from "./page.module.css";
-import AllowlistForm from "./components/AllowlistForm";
-import CustomCursor from "./components/CustomCursor";
 import FAQ from "./components/FAQ";
 import GalleryColumns from "./components/GalleryColumns";
 import IntroOverlay from "./components/IntroOverlay";
-import JoinCounter from "./components/JoinCounter";
-import LightningVeins from "./components/LightningVeins";
 import MagneticLink from "./components/MagneticLink";
-import Nav from "./components/Nav";
 import ParallaxHero from "./components/ParallaxHero";
 import Reveal from "./components/Reveal";
 import SacredNumbers from "./components/SacredNumbers";
-import Ouroboros from "./components/Ouroboros";
 import SealBadge from "./components/SealBadge";
 import TheCore from "./components/TheCore";
 import Ticker from "./components/Ticker";
@@ -58,11 +52,7 @@ const GALLERY = [
 export default function Home() {
   return (
     <div className={styles.page}>
-      <CustomCursor />
-      <Ouroboros />
-      <LightningVeins />
       <IntroOverlay />
-      <Nav />
 
       <section className={styles.hero}>
         <ParallaxHero />
@@ -91,19 +81,18 @@ export default function Home() {
 
         <div className={styles.heroContent}>
           <p className={styles.heroKicker}>GODS OF ROBINHOOD</p>
+          <h1 className={styles.heroTitle}>TITANS</h1>
           <p className={styles.heroLine}>
-            3,000 Titans. One Pantheon.
-            <br />
-            Forged in lightning. Built to become something bigger than the
-            PFP.
+            A pantheon of 3,000 original characters born from mythology,
+            power, and the world of Robinhood.
           </p>
-          <MagneticLink href="#allowlist" className={styles.heroCta}>
+          <MagneticLink href="/enter" className={styles.heroCta}>
             Enter the Pantheon →
           </MagneticLink>
         </div>
 
-        <span className={styles.heroSector} aria-hidden="true">
-          SECTOR: ROBINHOOD
+        <span className={styles.heroBuiltOn} aria-hidden="true">
+          EXCLUSIVELY BUILT ON ROBINHOOD
         </span>
 
         <span className={styles.scrollCue} aria-hidden="true" />
@@ -132,29 +121,6 @@ export default function Home() {
           </Reveal>
         </section>
 
-        <section id="allowlist">
-          <Reveal className={styles.allowlistSection}>
-            <div className={styles.sectionHead}>
-              <span className={styles.sectionIndex}>02</span>
-              <h2 className={styles.sectionTitle}>ENTER THE PANTHEON</h2>
-            </div>
-
-            <div className={styles.allowlistRow}>
-              <p className={styles.aboutText}>
-                The gates are opening. Submit your wallet for a chance to
-                join the first 3,000.
-              </p>
-              <AllowlistForm />
-            </div>
-          </Reveal>
-        </section>
-
-        <section>
-          <Reveal className={styles.joinBand}>
-            <JoinCounter />
-          </Reveal>
-        </section>
-
         <section id="lore" className={styles.loreSection}>
           <Reveal className={`${styles.chronicle} revealScale`}>
             <span className={styles.chronicleEyebrow}>[ CHRONICLE I ]</span>
@@ -168,7 +134,7 @@ export default function Home() {
         <section id="pantheon">
           <Reveal className={styles.gallery}>
             <div className={styles.sectionHead}>
-              <span className={styles.sectionIndex}>03</span>
+              <span className={styles.sectionIndex}>02</span>
               <h2 className={styles.sectionTitle}>THE PANTHEON</h2>
             </div>
             <p className={styles.gallerySub}>
@@ -187,7 +153,7 @@ export default function Home() {
         <section>
           <Reveal className={styles.faqSection}>
             <div className={styles.sectionHead}>
-              <span className={styles.sectionIndex}>04</span>
+              <span className={styles.sectionIndex}>03</span>
               <h2 className={styles.sectionTitle}>FAQ</h2>
             </div>
 
@@ -195,17 +161,6 @@ export default function Home() {
           </Reveal>
         </section>
       </main>
-
-      <footer className={styles.footer}>
-        <p>© {new Date().getFullYear()} Titans. Gods of Robinhood.</p>
-        <a
-          href="https://x.com/titanshood_"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Follow on X 
-        </a>
-      </footer>
     </div>
   );
 }

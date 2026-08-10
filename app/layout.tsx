@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Cinzel } from "next/font/google";
+import CustomCursor from "./components/CustomCursor";
+import Footer from "./components/Footer";
+import LightningVeins from "./components/LightningVeins";
+import Nav from "./components/Nav";
+import Ouroboros from "./components/Ouroboros";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -54,7 +59,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${cinzel.variable}`}
       >
+        <CustomCursor />
+        <Ouroboros />
+        <LightningVeins />
+        <Nav />
         {children}
+        <Footer />
       </body>
     </html>
   );

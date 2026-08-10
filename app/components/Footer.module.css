@@ -1,0 +1,14 @@
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 24px 32px;
+  font-size: 13px;
+  color: rgba(242, 255, 240, 0.5);
+  border-top: 1px solid var(--titans-border);
+}
+
+.footer a:hover {
+  color: var(--titans-green);
+}
