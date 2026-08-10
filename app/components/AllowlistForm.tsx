@@ -202,7 +202,7 @@ export default function AllowlistForm() {
         </div>
 
         <p className={styles.passNote}>
-          Screenshot this decree — you&apos;ll need it for the genesis mint.
+          Screenshot this decree. You&apos;ll need it for the genesis mint.
         </p>
 
         <button

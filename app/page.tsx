@@ -115,37 +115,10 @@ export default function Home() {
       </Reveal>
 
       <main className={styles.main}>
-        <section id="lore" className={styles.loreSection}>
-          <Reveal className={`${styles.chronicle} revealScale`}>
-            <span className={styles.chronicleEyebrow}>[ CHRONICLE I ]</span>
-            <span className={styles.chronicleSub}>THE AWAKENING</span>
-            <p className={styles.chronicleLine}>
-              Titans are powerful beings from one shared Pantheon.
-            </p>
-          </Reveal>
-        </section>
-
-        <section id="pantheon">
-          <Reveal className={styles.gallery}>
-            <div className={styles.sectionHead}>
-              <span className={styles.sectionIndex}>[ 01 ]</span>
-              <h2 className={styles.sectionTitle}>THE PANTHEON</h2>
-            </div>
-            <p className={styles.gallerySub}>
-              3,000 characters. Different forms, bloodlines and identities.
-              One world.
-            </p>
-
-            <GalleryColumns images={GALLERY} />
-          </Reveal>
-        </section>
-
-        <TheCore />
-
         <section id="vision">
           <Reveal className={`${styles.firstThousand} revealSlide`}>
             <div className={styles.sectionHead}>
-              <span className={styles.sectionIndex}>[ 02 ]</span>
+              <span className={styles.sectionIndex}>01</span>
               <h2 className={styles.sectionTitle}>THE FIRST 3,000</h2>
             </div>
             <p className={styles.firstThousandLine}>
@@ -156,24 +129,13 @@ export default function Home() {
               foundation of the characters, culture and universe we intend to
               build around them.
             </p>
-            <p className={styles.firstThousandBody}>
-              Titans begins with 3,000 digital characters. The ambition is to
-              develop the world and build Titans into a recognizable IP
-              beyond the collection.
-            </p>
-          </Reveal>
-        </section>
-
-        <section>
-          <Reveal className={styles.joinBand}>
-            <JoinCounter />
           </Reveal>
         </section>
 
         <section id="allowlist">
           <Reveal className={styles.allowlistSection}>
             <div className={styles.sectionHead}>
-              <span className={styles.sectionIndex}>[ 03 ]</span>
+              <span className={styles.sectionIndex}>02</span>
               <h2 className={styles.sectionTitle}>ENTER THE PANTHEON</h2>
             </div>
 
@@ -188,9 +150,44 @@ export default function Home() {
         </section>
 
         <section>
+          <Reveal className={styles.joinBand}>
+            <JoinCounter />
+          </Reveal>
+        </section>
+
+        <section id="lore" className={styles.loreSection}>
+          <Reveal className={`${styles.chronicle} revealScale`}>
+            <span className={styles.chronicleEyebrow}>[ CHRONICLE I ]</span>
+            <span className={styles.chronicleSub}>THE AWAKENING</span>
+            <p className={styles.chronicleLine}>
+              Titans are powerful beings from one shared Pantheon.
+            </p>
+          </Reveal>
+        </section>
+
+        <section id="pantheon">
+          <Reveal className={styles.gallery}>
+            <div className={styles.sectionHead}>
+              <span className={styles.sectionIndex}>03</span>
+              <h2 className={styles.sectionTitle}>THE PANTHEON</h2>
+            </div>
+            <p className={styles.gallerySub}>
+              3,000 characters. Different forms, bloodlines and identities.
+              One world.
+            </p>
+
+            <GalleryColumns images={GALLERY} />
+          </Reveal>
+        </section>
+
+        <Reveal className="revealScale">
+          <TheCore />
+        </Reveal>
+
+        <section>
           <Reveal className={styles.faqSection}>
             <div className={styles.sectionHead}>
-              <span className={styles.sectionIndex}>[ 04 ]</span>
+              <span className={styles.sectionIndex}>04</span>
               <h2 className={styles.sectionTitle}>FAQ</h2>
             </div>
 
@@ -206,7 +203,7 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Follow on X ↗
+          Follow on X 
         </a>
       </footer>
     </div>

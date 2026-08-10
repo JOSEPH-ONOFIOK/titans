@@ -18,9 +18,9 @@ const cinzel = Cinzel({
   subsets: ["latin"],
 });
 
-const TITLE = "TITANS — Gods of Robinhood";
+const TITLE = "TITANS, Gods of Robinhood";
 const DESCRIPTION =
-  "Gods of Robinhood. Secure your seat on the Titans allowlist.";
+  "Gods of Robinhood. Enter the Pantheon and join the Titans allowlist.";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ??

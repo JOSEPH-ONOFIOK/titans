@@ -35,7 +35,7 @@ export default function ParallaxHero() {
     <div ref={ref} className={styles.heroParallax}>
       <Image
         src="/titans-banner.png"
-        alt="Titans — Gods of Robinhood"
+        alt="Titans, Gods of Robinhood"
         fill
         sizes="100vw"
         quality={100}
