@@ -493,6 +493,62 @@
   color: rgba(242, 255, 240, 0.5);
 }
 
+.referralBox {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--titans-border);
+  border-radius: 4px;
+  background: rgba(166, 255, 0, 0.04);
+}
+
+.referralLabel {
+  font-family: var(--font-geist-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: rgba(242, 255, 240, 0.5);
+}
+
+.referralRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.referralLink {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-geist-mono);
+  font-size: 13px;
+  color: var(--titans-green);
+}
+
+.referralCopy {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 7px 12px;
+  border: 1px solid var(--titans-border);
+  border-radius: 3px;
+  background: none;
+  color: rgba(242, 255, 240, 0.8);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.referralCopy:hover {
+  border-color: var(--titans-green);
+  color: var(--titans-green);
+}
+
 .resetButton {
   margin-top: 8px;
   background: none;

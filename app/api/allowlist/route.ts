@@ -67,6 +67,9 @@ export async function POST(req: NextRequest) {
   const quote = Boolean(body.quote);
   const tag = Boolean(body.tag);
 
+  const refByRaw = String(body.refBy ?? "").trim().replace(/^@/, "").slice(0, 15);
+  const refBy = /^[A-Za-z0-9_]{0,15}$/.test(refByRaw) ? refByRaw : "";
+
   if (!ETH_ADDRESS_RE.test(wallet)) {
     return NextResponse.json(
       { error: "Enter a valid EVM wallet address (0x...)." },
@@ -98,7 +101,7 @@ export async function POST(req: NextRequest) {
         follow: follow ? "yes" : "no",
         quote: quote ? "yes" : "no",
         tag: tag ? "yes" : "no",
-        refBy: "",
+        refBy,
       }),
     });
 

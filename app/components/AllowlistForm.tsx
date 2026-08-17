@@ -10,6 +10,8 @@ import {
   Zap,
   Check,
   CheckCircle2,
+  Copy,
+  CopyCheck,
   X,
 } from "lucide-react";
 import styles from "./AllowlistForm.module.css";
@@ -65,6 +67,8 @@ export default function AllowlistForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
   const [passData, setPassData] = useState<PassData | null>(null);
+  const [refBy, setRefBy] = useState("");
+  const [linkCopied, setLinkCopied] = useState(false);
 
   const modalRef = useRef<HTMLFormElement>(null);
   const firstInputRef = useRef<HTMLInputElement>(null);
@@ -72,6 +76,11 @@ export default function AllowlistForm() {
   const submitButtonRef = useMagnetic<HTMLButtonElement>(0.2);
 
   const allDone = done.size === OBJECTIVES.length;
+
+  useEffect(() => {
+    const ref = new URLSearchParams(window.location.search).get("ref");
+    if (ref) setRefBy(ref.trim().slice(0, 30));
+  }, []);
 
   useEffect(() => {
     if (!modalOpen) return;
@@ -130,6 +139,7 @@ export default function AllowlistForm() {
           follow: done.has("follow"),
           quote: done.has("quote"),
           tag: done.has("tag"),
+          refBy,
         }),
       });
       const data = await res.json();
@@ -166,6 +176,16 @@ export default function AllowlistForm() {
       { label: "Status", value: "CHOSEN" },
       { label: "Sigil", value: passData.inviteCode },
     ];
+    const referralLink = `${window.location.origin}/enter?ref=${encodeURIComponent(
+      passData.twitter.replace(/^@/, "")
+    )}`;
+
+    function handleCopyReferral() {
+      navigator.clipboard.writeText(referralLink).then(() => {
+        setLinkCopied(true);
+        setTimeout(() => setLinkCopied(false), 2000);
+      });
+    }
 
     return (
       <div className={styles.passWrapper}>
@@ -204,6 +224,26 @@ export default function AllowlistForm() {
         <p className={styles.passNote}>
           Screenshot this decree. You&apos;ll need it for the genesis mint.
         </p>
+
+        <div className={styles.referralBox}>
+          <span className={styles.referralLabel}>YOUR REFERRAL LINK</span>
+          <div className={styles.referralRow}>
+            <span className={styles.referralLink}>{referralLink}</span>
+            <button
+              type="button"
+              className={styles.referralCopy}
+              onClick={handleCopyReferral}
+              aria-label="Copy referral link"
+            >
+              {linkCopied ? (
+                <CopyCheck size={15} strokeWidth={2} />
+              ) : (
+                <Copy size={15} strokeWidth={2} />
+              )}
+              {linkCopied ? "Copied" : "Copy"}
+            </button>
+          </div>
+        </div>
 
         <button
           className={styles.resetButton}
