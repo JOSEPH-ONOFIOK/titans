@@ -33,6 +33,7 @@ function truncateWallet(wallet: string) {
 
 const PROFILE_URL = "https://x.com/titanshood_";
 const FOUNDER_URL = "https://x.com/barzzard";
+const PINNED_POST_URL = "https://x.com/titanshood_/status/2089698835354243314";
 const QUOTE_TEXT = "Titans, rise";
 
 const OBJECTIVES = [
@@ -58,19 +59,21 @@ const OBJECTIVES = [
     id: "like",
     Icon: Heart,
     label: "Like the pinned post",
-    href: PROFILE_URL,
+    href: PINNED_POST_URL,
   },
   {
     id: "quote",
     Icon: Repeat2,
     label: `Quote it: "${QUOTE_TEXT}"`,
-    href: `https://x.com/intent/post?text=${encodeURIComponent(QUOTE_TEXT)}`,
+    href: `https://x.com/intent/post?text=${encodeURIComponent(
+      QUOTE_TEXT
+    )}&url=${encodeURIComponent(PINNED_POST_URL)}`,
   },
   {
     id: "tag",
     Icon: Tags,
     label: "Tag 3 friends on the post",
-    href: PROFILE_URL,
+    href: PINNED_POST_URL,
   },
 ] as const;
 
