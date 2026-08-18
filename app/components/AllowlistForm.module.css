@@ -257,6 +257,24 @@
   font-weight: 600;
 }
 
+.labelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.verifiedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-geist-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--titans-green);
+  text-transform: none;
+}
+
 .input {
   font-family: var(--font-geist-mono);
   background: rgba(255, 255, 255, 0.04);
@@ -267,6 +285,13 @@
   color: var(--foreground);
   outline: none;
   transition: border-color 0.15s, background 0.15s;
+}
+
+.input:read-only {
+  color: var(--titans-green);
+  border-color: rgba(166, 255, 0, 0.5);
+  background: rgba(166, 255, 0, 0.05);
+  cursor: default;
 }
 
 .input::placeholder {

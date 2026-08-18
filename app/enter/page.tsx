@@ -5,9 +5,9 @@ import Reveal from "../components/Reveal";
 import styles from "../page.module.css";
 
 export const metadata: Metadata = {
-  title: "Enter the Pantheon — Titans Allowlist",
+  title: "Enter the Pantheon, Titans Allowlist",
   description:
-    "The gates are opening. Submit your wallet for a chance to join the first 3,000 Titans.",
+    "The gates are opening. Submit your wallet for a chance to join the first 3,333 Titans.",
 };
 
 export default function EnterPage() {
@@ -30,7 +30,7 @@ export default function EnterPage() {
             <div className={styles.allowlistRow}>
               <p className={styles.aboutText}>
                 The gates are opening. Submit your wallet for a chance to
-                join the first 3,000.
+                join the first 3,333.
               </p>
               <AllowlistForm />
             </div>

@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import LightningVeins from "./components/LightningVeins";
 import Nav from "./components/Nav";
 import Ouroboros from "./components/Ouroboros";
+import Providers from "./components/Providers";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -59,12 +60,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${cinzel.variable}`}
       >
-        <CustomCursor />
-        <Ouroboros />
-        <LightningVeins />
-        <Nav />
-        {children}
-        <Footer />
+        <Providers>
+          <CustomCursor />
+          <Ouroboros />
+          <LightningVeins />
+          <Nav />
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

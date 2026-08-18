@@ -12,3 +12,9 @@
 .footer a:hover {
   color: var(--titans-green);
 }
+
+.footerLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}

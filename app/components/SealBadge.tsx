@@ -12,7 +12,7 @@ export default function SealBadge() {
         </defs>
         <text className={styles.ringText}>
           <textPath href="#seal-circle" startOffset="0%">
-            · TITANS · GODS OF ROBINHOOD · 3000 SUPPLY
+            · TITANS · GODS OF ROBINHOOD · 3333 SUPPLY
           </textPath>
         </text>
       </svg>

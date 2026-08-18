@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { signIn, useSession } from "next-auth/react";
 import { useMagnetic } from "../hooks/useMagnetic";
 import {
+  ShieldCheck,
   UserPlus,
   Heart,
   Repeat2,
@@ -30,14 +32,27 @@ function truncateWallet(wallet: string) {
 }
 
 const PROFILE_URL = "https://x.com/titanshood_";
+const FOUNDER_URL = "https://x.com/barzzard";
 const QUOTE_TEXT = "Titans, rise";
 
 const OBJECTIVES = [
+  {
+    id: "verify",
+    Icon: ShieldCheck,
+    label: "Sign in with X to verify",
+    href: "",
+  },
   {
     id: "follow",
     Icon: UserPlus,
     label: "Follow @titanshood_",
     href: PROFILE_URL,
+  },
+  {
+    id: "followFounder",
+    Icon: UserPlus,
+    label: "Follow @barzzard",
+    href: FOUNDER_URL,
   },
   {
     id: "like",
@@ -60,6 +75,7 @@ const OBJECTIVES = [
 ] as const;
 
 export default function AllowlistForm() {
+  const { data: session, status: sessionStatus } = useSession();
   const [done, setDone] = useState<Set<string>>(new Set());
   const [modalOpen, setModalOpen] = useState(false);
   const [wallet, setWallet] = useState("");
@@ -76,6 +92,13 @@ export default function AllowlistForm() {
   const submitButtonRef = useMagnetic<HTMLButtonElement>(0.2);
 
   const allDone = done.size === OBJECTIVES.length;
+
+  useEffect(() => {
+    if (sessionStatus === "authenticated" && session?.user?.username) {
+      setDone((prev) => new Set(prev).add("verify"));
+      setTwitter(session.user.username);
+    }
+  }, [sessionStatus, session]);
 
   useEffect(() => {
     const ref = new URLSearchParams(window.location.search).get("ref");
@@ -278,7 +301,12 @@ export default function AllowlistForm() {
               <button
                 key={obj.id}
                 type="button"
-                onClick={() => runObjective(obj.id, obj.href)}
+                onClick={() =>
+                  obj.id === "verify"
+                    ? signIn("twitter")
+                    : runObjective(obj.id, obj.href)
+                }
+                disabled={obj.id === "verify" && sessionStatus === "loading"}
                 className={`${styles.trialRow} ${
                   isDone ? styles.trialRowDone : ""
                 }`}
@@ -291,7 +319,11 @@ export default function AllowlistForm() {
                   )}
                 </span>
                 <Icon className={styles.trialIcon} strokeWidth={1.5} />
-                <span className={styles.trialLabel}>{obj.label}</span>
+                <span className={styles.trialLabel}>
+                  {obj.id === "verify" && isDone && session?.user?.username
+                    ? `Signed in as @${session.user.username}`
+                    : obj.label}
+                </span>
               </button>
             );
           })}
@@ -344,14 +376,22 @@ export default function AllowlistForm() {
 
             <p className={styles.clearedLine}>
               <CheckCircle2 className={styles.clearedIcon} strokeWidth={1.75} />
-              All 4 trials cleared
+              All {OBJECTIVES.length} trials cleared
             </p>
             <p id="allowlist-modal-heading" className={styles.cardHeading}>
               Inscribe your name
             </p>
 
             <label className={styles.label}>
-              X username
+              <span className={styles.labelRow}>
+                X username
+                {done.has("verify") && (
+                  <span className={styles.verifiedBadge}>
+                    <ShieldCheck size={12} strokeWidth={2.5} />
+                    Verified via X
+                  </span>
+                )}
+              </span>
               <input
                 ref={firstInputRef}
                 className={styles.input}
@@ -359,6 +399,7 @@ export default function AllowlistForm() {
                 placeholder="@yourhandle"
                 value={twitter}
                 onChange={(e) => setTwitter(e.target.value)}
+                readOnly={done.has("verify")}
                 required
               />
             </label>

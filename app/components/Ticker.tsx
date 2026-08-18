@@ -1,7 +1,7 @@
 import styles from "./Ticker.module.css";
 
 const ITEMS = [
-  "SUPPLY 3,000",
+  "SUPPLY 3,333",
   "REALM // ROBINHOOD",
   "MINT // TBA",
   "GODS OF ROBINHOOD",

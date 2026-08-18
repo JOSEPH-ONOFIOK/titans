@@ -83,7 +83,7 @@ export default function Home() {
           <p className={styles.heroKicker}>GODS OF ROBINHOOD</p>
           <h1 className={styles.heroTitle}>TITANS</h1>
           <p className={styles.heroLine}>
-            A pantheon of 3,000 original characters born from mythology,
+            A pantheon of 3,333 original characters born from mythology,
             power, and the world of Robinhood.
           </p>
           <MagneticLink href="/enter" className={styles.heroCta}>
@@ -108,7 +108,7 @@ export default function Home() {
           <Reveal className={`${styles.firstThousand} revealSlide`}>
             <div className={styles.sectionHead}>
               <span className={styles.sectionIndex}>01</span>
-              <h2 className={styles.sectionTitle}>THE FIRST 3,000</h2>
+              <h2 className={styles.sectionTitle}>THE FIRST 3,333</h2>
             </div>
             <p className={styles.firstThousandLine}>
               Every world has an origin. These are ours.
@@ -138,7 +138,7 @@ export default function Home() {
               <h2 className={styles.sectionTitle}>THE PANTHEON</h2>
             </div>
             <p className={styles.gallerySub}>
-              3,000 characters. Different forms, bloodlines and identities.
+              3,333 characters. Different forms, bloodlines and identities.
               One world.
             </p>
 

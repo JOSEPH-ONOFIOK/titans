@@ -6,15 +6,15 @@ import styles from "./FAQ.module.css";
 const ITEMS = [
   {
     q: "What are Titans?",
-    a: "Titans is an IP first collection of 3,000 original characters born from mythology, power, and the world of Robinhood. The collection marks the beginning of a character driven universe built around art, identity, community, and the Pantheon. Titans starts with the original 3,000, but the vision is to grow beyond the collection and build a recognizable IP around its characters and world.",
+    a: "Titans is an IP first collection of 3,333 original characters born from mythology, power, and the world of Robinhood. The collection marks the beginning of a character driven universe built around art, identity, community, and the Pantheon. Titans starts with the original 3,333, but the vision is to grow beyond the collection and build a recognizable IP around its characters and world.",
   },
-  { q: "How many Titans exist?", a: "3,000." },
+  { q: "How many Titans exist?", a: "3,333." },
   { q: "Mint price?", a: "TBA." },
   { q: "Network?", a: "Robinhood." },
   { q: "Is there a token?", a: "No." },
   {
     q: "What is the long-term goal?",
-    a: "Develop Titans into a recognizable character focused IP and brand that extends beyond the original NFT collection. The 3,000 Titans are the foundation. From there, the goal is to keep expanding the world through characters, stories, community, physical collectibles, merchandise, media, collaborations and new creative experiences. We want Titans to become something people recognize even outside Web3, a brand with its own identity, culture and universe. The collection is where Titans begins, not where it ends.",
+    a: "Develop Titans into a recognizable character focused IP and brand that extends beyond the original NFT collection. The 3,333 Titans are the foundation. From there, the goal is to keep expanding the world through characters, stories, community, physical collectibles, merchandise, media, collaborations and new creative experiences. We want Titans to become something people recognize even outside Web3, a brand with its own identity, culture and universe. The collection is where Titans begins, not where it ends.",
   },
 ];
 

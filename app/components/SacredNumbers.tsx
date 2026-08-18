@@ -129,7 +129,7 @@ export default function SacredNumbers() {
 
   return (
     <div ref={ref} className={styles.band}>
-      <Stat label="[ SUPPLY_ ]" value={3000} numeric sublabel="TITANS" active={active} />
+      <Stat label="[ SUPPLY_ ]" value={3333} numeric sublabel="TITANS" active={active} />
       <Stat label="[ MINT_ ]" value="TBA" sublabel="PRICE *" active={active} />
       <Stat label="[ REALM_ ]" value="ROBINHOOD" sublabel="CHAIN" active={active} />
     </div>
