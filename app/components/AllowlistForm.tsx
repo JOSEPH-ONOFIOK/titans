@@ -226,8 +226,8 @@ export default function AllowlistForm() {
             </div>
           </div>
 
-          <p className={styles.passHeadline}>ASCENSION GRANTED</p>
-          <p className={styles.passSubline}>PANTHEON GENESIS</p>
+          <p className={styles.passHeadline}>ASCENSION GRANTED.</p>
+          <p className={styles.passSubline}>PANTHEON GENESIS.</p>
 
           <div className={styles.passSheet}>
             {rows.map((row) => (
