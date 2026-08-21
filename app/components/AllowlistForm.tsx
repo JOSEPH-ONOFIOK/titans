@@ -27,13 +27,23 @@ type PassData = {
   inviteCode: string;
 };
 
+/**
+ * Set this to true when you want to close the allowlist.
+ *
+ * true  = nobody can submit
+ * false = allowlist is open
+ */
+const ALLOWLIST_CLOSED = true;
+
 function truncateWallet(wallet: string) {
   return `${wallet.slice(0, 6)}...${wallet.slice(-4)}`;
 }
 
 const PROFILE_URL = "https://x.com/titanshood_";
 const FOUNDER_URL = "https://x.com/barzzard";
-const PINNED_POST_URL = "https://x.com/titanshood_/status/2089698835354243314";
+const PINNED_POST_URL =
+  "https://x.com/titanshood_/status/2089698835354243314";
+
 const QUOTE_TEXT = "Titans, rise";
 
 const OBJECTIVES = [
@@ -79,6 +89,7 @@ const OBJECTIVES = [
 
 export default function AllowlistForm() {
   const { data: session, status: sessionStatus } = useSession();
+
   const [done, setDone] = useState<Set<string>>(new Set());
   const [modalOpen, setModalOpen] = useState(false);
   const [wallet, setWallet] = useState("");
@@ -91,22 +102,50 @@ export default function AllowlistForm() {
 
   const modalRef = useRef<HTMLFormElement>(null);
   const firstInputRef = useRef<HTMLInputElement>(null);
-  const continueButtonRef = useMagnetic<HTMLButtonElement>(0.3);
-  const submitButtonRef = useMagnetic<HTMLButtonElement>(0.2);
 
-  const allDone = done.size === OBJECTIVES.length;
+  const continueButtonRef =
+    useMagnetic<HTMLButtonElement>(0.3);
+
+  const submitButtonRef =
+    useMagnetic<HTMLButtonElement>(0.2);
+
+  /*
+   * --------------------------------------------------
+   * X LOGIN
+   * --------------------------------------------------
+   */
 
   useEffect(() => {
-    if (sessionStatus === "authenticated" && session?.user?.username) {
+    if (
+      sessionStatus === "authenticated" &&
+      session?.user?.username
+    ) {
       setDone((prev) => new Set(prev).add("verify"));
       setTwitter(session.user.username);
     }
   }, [sessionStatus, session]);
 
+  /*
+   * --------------------------------------------------
+   * REFERRAL
+   * --------------------------------------------------
+   */
+
   useEffect(() => {
-    const ref = new URLSearchParams(window.location.search).get("ref");
-    if (ref) setRefBy(ref.trim().slice(0, 30));
+    const ref = new URLSearchParams(
+      window.location.search
+    ).get("ref");
+
+    if (ref) {
+      setRefBy(ref.trim().slice(0, 30));
+    }
   }, []);
+
+  /*
+   * --------------------------------------------------
+   * MODAL KEYBOARD HANDLING
+   * --------------------------------------------------
+   */
 
   useEffect(() => {
     if (!modalOpen) return;
@@ -119,154 +158,375 @@ export default function AllowlistForm() {
         return;
       }
 
-      if (e.key !== "Tab" || !modalRef.current) return;
+      if (!modalRef.current || e.key !== "Tab") {
+        return;
+      }
 
-      const focusable = modalRef.current.querySelectorAll<HTMLElement>(
-        'input, button, [href], [tabindex]:not([tabindex="-1"])'
-      );
+      const focusable =
+        modalRef.current.querySelectorAll<HTMLElement>(
+          'input, button, [href], [tabindex]:not([tabindex="-1"])'
+        );
+
       if (focusable.length === 0) return;
 
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
 
-      if (e.shiftKey && document.activeElement === first) {
+      if (
+        e.shiftKey &&
+        document.activeElement === first
+      ) {
         e.preventDefault();
         last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
+      } else if (
+        !e.shiftKey &&
+        document.activeElement === last
+      ) {
         e.preventDefault();
         first.focus();
       }
     }
 
-    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener(
+      "keydown",
+      handleKeyDown
+    );
+
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener(
+        "keydown",
+        handleKeyDown
+      );
+
       continueButtonRef.current?.focus();
     };
   }, [modalOpen]);
 
+  /*
+   * --------------------------------------------------
+   * RUN OBJECTIVE
+   * --------------------------------------------------
+   */
+
   function runObjective(id: string, href: string) {
-    window.open(href, "_blank", "noopener,noreferrer");
-    setDone((prev) => new Set(prev).add(id));
+    if (ALLOWLIST_CLOSED) return;
+
+    window.open(
+      href,
+      "_blank",
+      "noopener,noreferrer"
+    );
+
+    setDone((prev) => {
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  /*
+   * --------------------------------------------------
+   * SUBMIT
+   * --------------------------------------------------
+   */
+
+  async function handleSubmit(
+    e: React.FormEvent
+  ) {
     e.preventDefault();
+
+    /*
+     * Extra frontend protection.
+     *
+     * Even if someone somehow opens the modal,
+     * submission is blocked when the allowlist is closed.
+     */
+
+    if (ALLOWLIST_CLOSED) {
+      setStatus("error");
+      setMessage(
+        "The allowlist is closed. No more submissions are being accepted."
+      );
+      return;
+    }
+
     setStatus("submitting");
     setMessage("");
 
     try {
-      const res = await fetch("/api/allowlist", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          wallet,
-          twitter,
-          follow: done.has("follow"),
-          quote: done.has("quote"),
-          tag: done.has("tag"),
-          refBy,
-        }),
-      });
+      const res = await fetch(
+        "/api/allowlist",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            wallet,
+            twitter,
+            follow: done.has("follow"),
+            quote: done.has("quote"),
+            tag: done.has("tag"),
+            refBy,
+          }),
+        }
+      );
+
       const data = await res.json();
 
       if (!res.ok) {
         setStatus("error");
-        setMessage(data.error ?? "Something went wrong. Try again.");
+        setMessage(
+          data.error ??
+            "Something went wrong. Try again."
+        );
         return;
       }
 
       setPassData({
         wallet,
-        twitter: twitter.startsWith("@") ? twitter : `@${twitter}`,
+        twitter: twitter.startsWith("@")
+          ? twitter
+          : `@${twitter}`,
         position: data.position,
         inviteCode: data.inviteCode,
       });
+
       setStatus("success");
       setModalOpen(false);
-      setMessage("You're in. Wallet locked in for the WL phase.");
+
+      setMessage(
+        "You're in. Wallet locked in for the WL phase."
+      );
+
       setWallet("");
       setTwitter("");
     } catch {
       setStatus("error");
-      setMessage("Couldn't reach the server. Try again in a sec.");
+      setMessage(
+        "Couldn't reach the server. Try again in a sec."
+      );
     }
   }
 
+  /*
+   * --------------------------------------------------
+   * CLOSED STATE
+   * --------------------------------------------------
+   */
+
+  if (ALLOWLIST_CLOSED) {
+    return (
+      <div className={styles.closedState}>
+        <div className={styles.closedIcon}>
+          <X
+            size={22}
+            strokeWidth={1.5}
+          />
+        </div>
+
+        <p className={styles.trialsEyebrow}>
+          THE TRIALS
+        </p>
+
+        <h2 className={styles.closedTitle}>
+          ALLOWLIST CLOSED
+        </h2>
+
+        <p className={styles.closedText}>
+          The gates have been sealed.
+          <br />
+          No more entries are being accepted.
+        </p>
+      </div>
+    );
+  }
+
+  /*
+   * --------------------------------------------------
+   * SUCCESS / DECREE
+   * --------------------------------------------------
+   */
+
   if (status === "success" && passData) {
-    const decreeNo = String(passData.position).padStart(4, "0");
-    const walletTag = passData.wallet.slice(2, 6).toUpperCase();
+    const decreeNo = String(
+      passData.position
+    ).padStart(4, "0");
+
+    const walletTag = passData.wallet
+      .slice(2, 6)
+      .toUpperCase();
+
     const rows = [
-      { label: "User", value: passData.twitter },
-      { label: "Wallet", value: truncateWallet(passData.wallet) },
-      { label: "Status", value: "CHOSEN" },
-      { label: "Sigil", value: passData.inviteCode },
+      {
+        label: "User",
+        value: passData.twitter,
+      },
+      {
+        label: "Wallet",
+        value: truncateWallet(
+          passData.wallet
+        ),
+      },
+      {
+        label: "Status",
+        value: "CHOSEN",
+      },
+      {
+        label: "Sigil",
+        value: passData.inviteCode,
+      },
     ];
-    const referralLink = `${window.location.origin}/enter?ref=${encodeURIComponent(
+
+    const referralLink = `${
+      window.location.origin
+    }/enter?ref=${encodeURIComponent(
       passData.twitter.replace(/^@/, "")
     )}`;
 
     function handleCopyReferral() {
-      navigator.clipboard.writeText(referralLink).then(() => {
-        setLinkCopied(true);
-        setTimeout(() => setLinkCopied(false), 2000);
-      });
+      navigator.clipboard
+        .writeText(referralLink)
+        .then(() => {
+          setLinkCopied(true);
+
+          setTimeout(
+            () => setLinkCopied(false),
+            2000
+          );
+        });
     }
 
     return (
       <div className={styles.passWrapper}>
         <div className={styles.passCard}>
-          <span className={styles.passStamp}>SEALED</span>
+          <span className={styles.passStamp}>
+            SEALED
+          </span>
 
           <div className={styles.passHeader}>
-            <Zap className={styles.passZap} strokeWidth={1.5} />
+            <Zap
+              className={styles.passZap}
+              strokeWidth={1.5}
+            />
+
             <div>
-              <p className={styles.passEyebrow}>TITANS DECREE</p>
-              <p className={styles.passFileNo}>DECREE NO. {decreeNo}</p>
+              <p className={styles.passEyebrow}>
+                TITANS DECREE
+              </p>
+
+              <p className={styles.passFileNo}>
+                DECREE NO. {decreeNo}
+              </p>
             </div>
           </div>
 
-          <p className={styles.passHeadline}>ASCENSION GRANTED.</p>
-          <p className={styles.passSubline}>PANTHEON GENESIS.</p>
+          <p className={styles.passHeadline}>
+            ASCENSION GRANTED.
+          </p>
+
+          <p className={styles.passSubline}>
+            PANTHEON GENESIS.
+          </p>
 
           <div className={styles.passSheet}>
             {rows.map((row) => (
-              <div className={styles.passRow} key={row.label}>
-                <span className={styles.passRowLabel}>{row.label}</span>
-                <span className={styles.passRowDots} />
-                <span className={styles.passRowValue}>{row.value}</span>
+              <div
+                className={styles.passRow}
+                key={row.label}
+              >
+                <span
+                  className={
+                    styles.passRowLabel
+                  }
+                >
+                  {row.label}
+                </span>
+
+                <span
+                  className={
+                    styles.passRowDots
+                  }
+                />
+
+                <span
+                  className={
+                    styles.passRowValue
+                  }
+                >
+                  {row.value}
+                </span>
               </div>
             ))}
           </div>
 
           <div className={styles.passFooter}>
-            <span className={styles.passBarcode} aria-hidden="true" />
-            <span className={styles.passCode}>
-              GODS-{passData.position}-{walletTag}
+            <span
+              className={styles.passBarcode}
+              aria-hidden="true"
+            />
+
+            <span
+              className={styles.passCode}
+            >
+              GODS-{passData.position}-
+              {walletTag}
             </span>
           </div>
         </div>
 
         <p className={styles.passNote}>
-          Screenshot this decree. You&apos;ll need it for the genesis mint.
+          Screenshot this decree. You&apos;ll
+          need it for the genesis mint.
         </p>
 
         <div className={styles.referralBox}>
-          <span className={styles.referralLabel}>YOUR REFERRAL LINK</span>
-          <div className={styles.referralRow}>
-            <span className={styles.referralLink}>{referralLink}</span>
+          <span
+            className={
+              styles.referralLabel
+            }
+          >
+            YOUR REFERRAL LINK
+          </span>
+
+          <div
+            className={
+              styles.referralRow
+            }
+          >
+            <span
+              className={
+                styles.referralLink
+              }
+            >
+              {referralLink}
+            </span>
+
             <button
               type="button"
-              className={styles.referralCopy}
-              onClick={handleCopyReferral}
+              className={
+                styles.referralCopy
+              }
+              onClick={
+                handleCopyReferral
+              }
               aria-label="Copy referral link"
             >
               {linkCopied ? (
-                <CopyCheck size={15} strokeWidth={2} />
+                <CopyCheck
+                  size={15}
+                  strokeWidth={2}
+                />
               ) : (
-                <Copy size={15} strokeWidth={2} />
+                <Copy
+                  size={15}
+                  strokeWidth={2}
+                />
               )}
-              {linkCopied ? "Copied" : "Copy"}
+
+              {linkCopied
+                ? "Copied"
+                : "Copy"}
             </button>
           </div>
         </div>
@@ -286,150 +546,322 @@ export default function AllowlistForm() {
     );
   }
 
-  const progress = (done.size / OBJECTIVES.length) * 100;
+  /*
+   * --------------------------------------------------
+   * TRIALS
+   * --------------------------------------------------
+   */
+
+  const allDone =
+    done.size === OBJECTIVES.length;
+
+  const progress =
+    (done.size / OBJECTIVES.length) * 100;
 
   return (
     <>
       <div className={styles.trials}>
         <div className={styles.trialsHead}>
-          <span className={styles.trialsEyebrow}>THE TRIALS</span>
-          <p className={styles.trialsTitle}>Prove your worth</p>
+          <span
+            className={
+              styles.trialsEyebrow
+            }
+          >
+            THE TRIALS
+          </span>
+
+          <p
+            className={
+              styles.trialsTitle
+            }
+          >
+            Prove your worth
+          </p>
         </div>
 
         <div className={styles.trialList}>
-          {OBJECTIVES.map((obj, i) => {
-            const isDone = done.has(obj.id);
-            const Icon = obj.Icon;
-            return (
-              <button
-                key={obj.id}
-                type="button"
-                onClick={() =>
-                  obj.id === "verify"
-                    ? signIn("twitter")
-                    : runObjective(obj.id, obj.href)
-                }
-                disabled={obj.id === "verify" && sessionStatus === "loading"}
-                className={`${styles.trialRow} ${
-                  isDone ? styles.trialRowDone : ""
-                }`}
-              >
-                <span className={styles.trialIndex}>
-                  {isDone ? (
-                    <Check size={14} strokeWidth={2.5} />
-                  ) : (
-                    String(i + 1).padStart(2, "0")
-                  )}
-                </span>
-                <Icon className={styles.trialIcon} strokeWidth={1.5} />
-                <span className={styles.trialLabel}>
-                  {obj.id === "verify" && isDone && session?.user?.username
-                    ? `Signed in as @${session.user.username}`
-                    : obj.label}
-                </span>
-              </button>
-            );
-          })}
+          {OBJECTIVES.map(
+            (obj, i) => {
+              const isDone =
+                done.has(obj.id);
+
+              const Icon = obj.Icon;
+
+              return (
+                <button
+                  key={obj.id}
+                  type="button"
+                  onClick={() =>
+                    obj.id === "verify"
+                      ? signIn("twitter")
+                      : runObjective(
+                          obj.id,
+                          obj.href
+                        )
+                  }
+                  disabled={
+                    obj.id === "verify" &&
+                    sessionStatus ===
+                      "loading"
+                  }
+                  className={`${
+                    styles.trialRow
+                  } ${
+                    isDone
+                      ? styles.trialRowDone
+                      : ""
+                  }`}
+                >
+                  <span
+                    className={
+                      styles.trialIndex
+                    }
+                  >
+                    {isDone ? (
+                      <Check
+                        size={14}
+                        strokeWidth={2.5}
+                      />
+                    ) : (
+                      String(i + 1).padStart(
+                        2,
+                        "0"
+                      )
+                    )}
+                  </span>
+
+                  <Icon
+                    className={
+                      styles.trialIcon
+                    }
+                    strokeWidth={1.5}
+                  />
+
+                  <span
+                    className={
+                      styles.trialLabel
+                    }
+                  >
+                    {obj.id === "verify" &&
+                    isDone &&
+                    session?.user
+                      ?.username
+                      ? `Signed in as @${session.user.username}`
+                      : obj.label}
+                  </span>
+                </button>
+              );
+            }
+          )}
         </div>
 
-        <div className={styles.progressTrack}>
+        <div
+          className={
+            styles.progressTrack
+          }
+        >
           <div
-            className={styles.progressFill}
-            style={{ width: `${progress}%` }}
+            className={
+              styles.progressFill
+            }
+            style={{
+              width: `${progress}%`,
+            }}
           />
         </div>
-        <span className={styles.progressLabel}>
-          STATUS // <span className={styles.progressLabelState}>MORTAL</span>
+
+        <span
+          className={
+            styles.progressLabel
+          }
+        >
+          STATUS //{" "}
+          <span
+            className={
+              styles.progressLabelState
+            }
+          >
+            MORTAL
+          </span>
         </span>
 
         {allDone && (
           <button
             type="button"
             ref={continueButtonRef}
-            className={styles.continueButton}
-            onClick={() => setModalOpen(true)}
+            className={
+              styles.continueButton
+            }
+            onClick={() =>
+              setModalOpen(true)
+            }
           >
             Continue →
           </button>
         )}
       </div>
 
+      /*
+       * --------------------------------------------------
+       * MODAL
+       * --------------------------------------------------
+       */
+
       {modalOpen && (
         <div
-          className={styles.modalBackdrop}
-          onClick={() => setModalOpen(false)}
+          className={
+            styles.modalBackdrop
+          }
+          onClick={() =>
+            setModalOpen(false)
+          }
         >
           <form
             ref={modalRef}
-            className={styles.modalCard}
-            onSubmit={handleSubmit}
-            onClick={(e) => e.stopPropagation()}
+            className={
+              styles.modalCard
+            }
+            onSubmit={
+              handleSubmit
+            }
+            onClick={(e) =>
+              e.stopPropagation()
+            }
             role="dialog"
             aria-modal="true"
             aria-labelledby="allowlist-modal-heading"
           >
             <button
               type="button"
-              className={styles.modalClose}
-              onClick={() => setModalOpen(false)}
+              className={
+                styles.modalClose
+              }
+              onClick={() =>
+                setModalOpen(false)
+              }
               aria-label="Close"
             >
               <X size={18} />
             </button>
 
-            <p className={styles.clearedLine}>
-              <CheckCircle2 className={styles.clearedIcon} strokeWidth={1.75} />
-              All {OBJECTIVES.length} trials cleared
+            <p
+              className={
+                styles.clearedLine
+              }
+            >
+              <CheckCircle2
+                className={
+                  styles.clearedIcon
+                }
+                strokeWidth={1.75}
+              />
+
+              All {OBJECTIVES.length}{" "}
+              trials cleared
             </p>
-            <p id="allowlist-modal-heading" className={styles.cardHeading}>
+
+            <p
+              id="allowlist-modal-heading"
+              className={
+                styles.cardHeading
+              }
+            >
               Inscribe your name
             </p>
 
-            <label className={styles.label}>
-              <span className={styles.labelRow}>
+            <label
+              className={
+                styles.label
+              }
+            >
+              <span
+                className={
+                  styles.labelRow
+                }
+              >
                 X username
+
                 {done.has("verify") && (
-                  <span className={styles.verifiedBadge}>
-                    <ShieldCheck size={12} strokeWidth={2.5} />
+                  <span
+                    className={
+                      styles.verifiedBadge
+                    }
+                  >
+                    <ShieldCheck
+                      size={12}
+                      strokeWidth={2.5}
+                    />
                     Verified via X
                   </span>
                 )}
               </span>
+
               <input
                 ref={firstInputRef}
-                className={styles.input}
+                className={
+                  styles.input
+                }
                 type="text"
                 placeholder="@yourhandle"
                 value={twitter}
-                onChange={(e) => setTwitter(e.target.value)}
-                readOnly={done.has("verify")}
+                onChange={(e) =>
+                  setTwitter(
+                    e.target.value
+                  )
+                }
+                readOnly={done.has(
+                  "verify"
+                )}
                 required
               />
             </label>
 
-            <label className={styles.label}>
+            <label
+              className={
+                styles.label
+              }
+            >
               EVM wallet address
+
               <input
-                className={styles.input}
+                className={
+                  styles.input
+                }
                 type="text"
                 placeholder="0x..."
                 value={wallet}
-                onChange={(e) => setWallet(e.target.value)}
+                onChange={(e) =>
+                  setWallet(
+                    e.target.value
+                  )
+                }
                 required
               />
             </label>
 
             {status === "error" && (
-              <p className={styles.errorMsg}>{message}</p>
+              <p
+                className={
+                  styles.errorMsg
+                }
+              >
+                {message}
+              </p>
             )}
 
             <button
               ref={submitButtonRef}
-              className={styles.submitButton}
+              className={
+                styles.submitButton
+              }
               type="submit"
-              disabled={status === "submitting"}
+              disabled={
+                status === "submitting"
+              }
             >
-              {status === "submitting" ? "SEALING..." : "ASCEND TO THE LIST"}
+              {status === "submitting"
+                ? "SEALING..."
+                : "ASCEND TO THE LIST"}
             </button>
           </form>
         </div>
